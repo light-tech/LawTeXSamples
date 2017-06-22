@@ -1,0 +1,31 @@
+\documentclass{article}
+\usepackage{amsmath}
+\newtheorem{thm}{Theorem}
+
+\begin{document}
+
+\title{Include SVG graphics}
+\author{LT}
+\date{\today}
+\maketitle
+
+\section{Rounded Boxed Theorem}
+
+\vspace{0.5cm}
+\special{<svg><rect x='0' y='0' width='800' height='70' rx='10' ry='10' fill='yellow'/></svg>}
+\vspace{0.2cm}
+\begin{thm}[Abel]
+There exists a quintic that cannot be solved by radical.
+\end{thm}
+\vspace{0.5cm}
+
+\section{Yin Yang}
+
+\section{Tiger}
+
+\special{includesvg tiger.svg}
+\vspace{10cm}
+
+\section{Rasterized/Bitmap SVG}
+
+\end{document}

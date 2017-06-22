@@ -1,0 +1,154 @@
+\documentclass{beamer}
+\usepackage{listings}
+\usetheme{Montpellier}
+\usecolortheme{beaver}
+
+\renewcommand\mathfamilydefault{\rmdefault} % Beamer uses san serif font for math; unfortunately unavailable as METAFONT. Do this to use default Computer Modern.
+
+\title{The best \LaTeX\ editor}
+\author{Lightech \and LawTeX}
+\date{Till The End of Time} % Set date explicitly; without this, we will run into undefined control sequence \languagename at \maketitle. This might be due to defect in our set-up.
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{What is LawTeX?}
+\begin{itemize}
+\item End to end \LaTeX\ solution
+\begin{itemize}
+\item A highly optimized source code editor written in C++ exploiting the graphic powerhouse DirectX
+\item The original i.e. D. E. Knuth's \TeX\ compiler to produce DVI output
+\item A (DirectX based) DVI viewer, optimized for live rendering
+\end{itemize}
+\item Optimized Universal Windows Platform (UWP) app
+\begin{itemize}
+\item Designed for Windows 10 devices
+\item Available for PC, tablets, phones, HoloLens, XBox, etc.
+\item Continuum--ready
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Goal of the app}
+The best environment to \emph{write} documents and \emph{prepare} presentations
+\begin{itemize}
+\item For publishing print--ready documents, consider pdfTeX or online tools like ShareLatex.com
+\item (We love to add support for ShareLatex so that you can backup your documents there but the site does not provide an API at the moment.)
+\item (And no, we do not plan to include DVI to PDF converter.)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Features}
+\begin{itemize}
+\item Automatically detect missing packages
+\item Extremely small footprint
+\begin{itemize}
+\item Takes a breeze to install and ready to compose your document
+\item The app itself is about 1.2MB download
+\item Typical packages (for math articles) take up about 8MB
+\item In our installation, it takes 24MB in total \emph{with beamer and powerdot}
+\end{itemize}
+\item Option to automatically compile and re--render the DVI when you pause typing
+\begin{itemize}
+\item No need to waste your time pressing F9 (WinEdt), switching back and forth from Adobe Reader
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Features}
+Being modern app
+\begin{itemize}
+\item Support additional input methods
+\begin{itemize}
+\item Example: touch screen
+\item Example: input text using the word flow keyboard (on phones only), voice, handwriting input panel (PC only)
+\end{itemize}
+\item Optimizes for battery usage unlike traditional Win32 PC app
+\begin{itemize}
+\item For example, graphic memory is freed when suspending app
+\end{itemize}
+\item Low memory (RAM) usage
+\begin{itemize}
+\item Typically consumes about 30-40MB while TeX Maker consumes 60-100MB (not to count the PDF reader)
+\end{itemize}
+\item Faster compilation
+\begin{itemize}
+\item We do not need to load the engines over and over again
+\end{itemize}
+\item Easy to uninstall; without polluting your system
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Limitation}
+\begin{itemize}
+\item Cannot support some packages such as \texttt{moderncv}, \texttt{context} due to their dependency on some modern TeX engines such as pdfTeX or LuaTeX
+\item Cannot support bitmap graphics due to \TeX\ limitation; cannot handle EPS graphics since we have no PostScript processing capability
+\item Cannot input Tab in the editor
+\begin{itemize}
+\item \emph{Reason}: The UWP model does not allow apps to handle Tab key which is used to switch between UI elements such as text fields or buttons
+\end{itemize}
+\item Cannot support \texttt{\textbackslash input}, \texttt{\textbackslash include}
+\begin{itemize}
+\item \emph{Reason}: The UWP model does not provide access to the file system freely. For an app to access a file, user needs to select it from the UI.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Usage Tip: Conditional Compilation}
+\textbf{Problem}
+\begin{itemize}
+\item LawTeX uses original \TeX\ which generates DVI while you probably want to use pdfTeX to get the published version
+\item Some \TeX\ features are only available in pdfTeX while others are also present in the original
+\item Wish to use lighter weight source code when editing (for faster recompilation) and heavy weight (but much more beautiful result) when publishing
+\end{itemize}
+\textbf{Solution}
+\begin{itemize}
+\item Use control sequences such as \texttt{\textbackslash ifPDFTeX} in package \texttt{iftex} to switch between engines in a single source code
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Usage Tip: Missing Fonts}
+\textbf{Problem}
+\begin{itemize}
+\item Our DVI rendering engine does not support Type 1 fonts that many fonts are distributed
+\item Only fonts based on Knuth's METAFONT can be rendered
+\end{itemize}
+\textbf{Solution}
+\begin{itemize}
+\item Search for alternatives on the web
+\item Use conditional compilation to use METAFONT alternative on LawTeX
+\end{itemize}
+\textbf{Example}
+\begin{itemize}
+\item \texttt{\textbackslash mathfrak} in \texttt{amsmath} package resolves to Euler Frakture font. The AMS decided to remove the METAFONT version and distributed only the Type 1 version (for use in pdfTeX). As an alternative, use \texttt{\textbackslash textfrak} in \texttt{yfonts} package.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Usage Tip: Missing Fonts}
+\begin{itemize}
+\item Using conditional compilation, do something like
+\lstset{language=TeX, morekeywords={ifPDFTeX,RequirePackage,usepackage,newcommand}}
+\begin{lstlisting}
+\RequirePackage{iftex}
+\ifPDFTeX
+    % Do nothing since \mathfrak is
+    % available in pdfTeX
+\else
+    \usepackage{yfonts}
+    % This will allow us to use a single
+    % \mathfrak command in either case
+    % for Gothic characters
+    \newcommand{\mathfrak}{\textfrak}
+\fi
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Thanks for choosing LawTeX and $\cdots$}
+\begin{center}
+\Huge Happy \TeX ing
+\end{center}
+\end{frame}
+
+\end{document}

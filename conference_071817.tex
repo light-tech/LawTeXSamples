@@ -1,4 +1,7 @@
-\documentclass[conference]{IEEEtran}
+\documentclass[conference,nofonttune,10pt]{IEEEtran}
+\renewcommand{\rmdefault}{cm}
+\renewcommand{\sfdefault}{cmss}
+\renewcommand{\ttdefault}{cmtt}
 \IEEEoverridecommandlockouts
 % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
 \usepackage{cite}
@@ -64,6 +67,8 @@ or Math in Paper Title or Abstract.
 \begin{IEEEkeywords}
 component, formatting, style, styling, insert
 \end{IEEEkeywords}
+
+\renewcommand{\familydefault}{\sfdefault}
 
 \section{Introduction}
 This document is a model and instructions for \LaTeX.
@@ -228,7 +233,7 @@ copy& More table copy$^{\mathrm{a}}$& &  \\
 \end{table}
 
 \begin{figure}[htbp]
-\centerline{\includegraphics{fig1.png}}
+%\centerline{\includegraphics{fig1.png}}
 \caption{Example of a figure caption.}
 \label{fig}
 \end{figure}

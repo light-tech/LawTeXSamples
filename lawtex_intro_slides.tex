@@ -6,7 +6,7 @@
 \renewcommand\mathfamilydefault{\rmdefault} % Beamer uses san serif font for math; unfortunately unavailable as METAFONT. Do this to use default Computer Modern.
 
 \title{The best \LaTeX\ editor}
-\author{Lightech \and LawTeX}
+\author{Lightech}
 \date{Till The End of Time} % Set date explicitly; without this, we will run into undefined control sequence \languagename at \maketitle. This might be due to defect in our set-up.
 
 \begin{document}
@@ -19,6 +19,7 @@
 \begin{itemize}
 \item A highly optimized source code editor written in C++ exploiting the graphic powerhouse DirectX
 \item The original i.e. D. E. Knuth's \TeX\ compiler to produce DVI output
+(also support $\varepsilon$-\TeX\ extension)
 \item A (DirectX based) DVI viewer, optimized for live rendering
 \end{itemize}
 \item Optimized Universal Windows Platform (UWP) app
@@ -42,17 +43,18 @@ The best environment to \emph{write} documents and \emph{prepare} presentations
 \begin{frame}{Features}
 \begin{itemize}
 \item Automatically detect missing packages
-\item Extremely small footprint
-\begin{itemize}
-\item Takes a breeze to install and ready to compose your document
-\item The app itself is about 1.2MB download
-\item Typical packages (for math articles) take up about 8MB
-\item In our installation, it takes 24MB in total \emph{with beamer and powerdot}
-\end{itemize}
 \item Option to automatically compile and re--render the DVI when you pause typing
 \begin{itemize}
 \item No need to waste your time pressing F9 (WinEdt), switching back and forth from Adobe Reader
 \end{itemize}
+\item Extremely small footprint
+\begin{itemize}
+\item Takes a breeze to install and ready to compose your document
+\item The app itself is about 1MB download
+\item Typical packages (for math articles) take up about 8MB
+\item In our installation, it takes 24MB in total \emph{with beamer and powerdot}
+\end{itemize}
+\item Direct inclusion of SVG graphic
 \end{itemize}
 \end{frame}
 
@@ -62,7 +64,7 @@ Being modern app
 \item Support additional input methods
 \begin{itemize}
 \item Example: touch screen
-\item Example: input text using the word flow keyboard (on phones only), voice, handwriting input panel (PC only)
+\item Example: input text using the word flow (i.e. Swype-like) keyboard, voice, handwriting input panel (PC only)
 \end{itemize}
 \item Optimizes for battery usage unlike traditional Win32 PC app
 \begin{itemize}
@@ -75,6 +77,7 @@ Being modern app
 \item Faster compilation
 \begin{itemize}
 \item We do not need to load the engines over and over again
+\item Files are kept in memory, not reloaded from disks between compilations
 \end{itemize}
 \item Easy to uninstall; without polluting your system
 \end{itemize}
@@ -84,14 +87,6 @@ Being modern app
 \begin{itemize}
 \item Cannot support some packages such as \texttt{moderncv}, \texttt{context} due to their dependency on some modern TeX engines such as pdfTeX or LuaTeX
 \item Cannot support bitmap graphics due to \TeX\ limitation; cannot handle EPS graphics since we have no PostScript processing capability
-\item Cannot input Tab in the editor
-\begin{itemize}
-\item \emph{Reason}: The UWP model does not allow apps to handle Tab key which is used to switch between UI elements such as text fields or buttons
-\end{itemize}
-\item Cannot support \texttt{\textbackslash input}, \texttt{\textbackslash include}
-\begin{itemize}
-\item \emph{Reason}: The UWP model does not provide access to the file system freely. For an app to access a file, user needs to select it from the UI.
-\end{itemize}
 \end{itemize}
 \end{frame}
 
@@ -142,6 +137,41 @@ Being modern app
     \newcommand{\mathfrak}{\textfrak}
 \fi
 \end{lstlisting}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Include SVG graphic: Inline}
+\lstset{language=TeX}
+\begin{itemize}
+\item Use source special command with the content of the SVG
+
+\begin{lstlisting}
+\special{<svg><rect x='0' y='0' rx='10' ry='10'
+width='50' height='50' fill='yellow'/></svg>}
+\end{lstlisting}
+
+will render \special{<svg><rect x='0' y='0' rx='10' ry='10'
+width='50' height='50' fill='yellow'/></svg>} \hspace{0.8cm}\vspace{1cm}
+
+in your document.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Include SVG graphic: Reference to SVG file}
+\lstset{language=TeX}
+\begin{itemize}
+\item Use source special command to include from an SVG file
+
+\begin{lstlisting}
+\special{includesvg tiger.svg}
+\end{lstlisting}
+
+%\special{includesvg tiger.svg}\vspace{4cm}
+
+\begin{itemize}
+\item Need to open the SVG file in the editor and do a ``dummy'' compile on it so that it gets added to the app's virtual file system
+\item This is preferred if the SVG content is big for in this case, the file is only loaded one and reused in subsequent rendering. TeX doesn't have to read it at all!
+\end{itemize}
 \end{itemize}
 \end{frame}
 
